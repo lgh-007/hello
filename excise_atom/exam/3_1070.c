@@ -7,23 +7,20 @@ typedef  struct BiTNode{
     struct BiTNode *lchild, *rchild;
 }BiTNode, *BiTree;
 /*二叉树的建立，按前序遍历的方式建立二叉树*/
-void CreateBiTree(BiTree *T,char *p){
-  // ElemType ch;
-  // scanf("%c",&ch);
-  if(*p == '\0'){
-    return;
-  }
-  if (*p == '#')
+void CreateBiTree(BiTree *T){
+  ElemType ch;
+  scanf("%c",&ch);
+  if (ch == '#')
       *T = NULL;  //保证是叶结点
   else
   {
       *T = (BiTree)malloc(sizeof(BiTNode));
       //if (!*T)
           //exit(OVERFLOW); //内存分配失败则退出。
-      (*T)->data = *p;//生成结点
+      (*T)->data = ch;//生成结点
 
-      CreateBiTree(&(*T)->lchild,++p);//构造左子树
-      CreateBiTree(&(*T)->rchild,++p);//构造右子树
+      CreateBiTree(&(*T)->lchild);//构造左子树
+      CreateBiTree(&(*T)->rchild);//构造右子树
   }
 }
 
@@ -39,14 +36,13 @@ void InOrder(BiTree t){
 int main(int argc, char const *argv[]) {
   /* code */
   BiTree t;
-  char arr[100];
-  char *p = arr;
-  while(gets(arr)){
-    CreateBiTree(&t,p);
-    printf("%s\n",p);
-    InOrder(t);
-    printf("\n");
-  }
+  // char arr[100];
+  // char *p = arr;
+  // while(gets(arr)){
+  CreateBiTree(&t);
+  InOrder(t);
+  printf("\n");
+
 
 
   return 0;
