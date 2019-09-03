@@ -1,5 +1,5 @@
-main.o:clean 0_1060.c
-		gcc 0_1060.c -o a.out
+main.o:clean 0_1009.c
+		gcc 0_1009.c -o a.out
 		./a.out
 .PHONY: clean
 

@@ -1,0 +1,3 @@
+mem_stat.c:46: 不符合编码规范TYPS-8，单目操作符--不应与它的操作数分开
+mem_stat.c:13: FILE-5: header file include/mem_stat.h is not in the path include
+mem_stat.c:59: TYPS-3: line is longer than 100 characters

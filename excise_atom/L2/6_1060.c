@@ -3,23 +3,21 @@
 #include <stdbool.h>
 typedef char ElemType;
 #define datasize 50
-//äºŒå‰æ ‘çš„äºŒå‰é“¾è¡¨ç»“æ„ï¼Œä¹Ÿå°±æ˜¯äºŒå‰æ ‘çš„å­˜å‚¨ç»“æ„ï¼Œ1ä¸ªæ•°æ®åŸŸï¼Œ2ä¸ªæŒ‡é’ˆåŸŸï¼ˆåˆ†åˆ«æŒ‡å‘å·¦å³å­©å­ï¼‰
+//¶ş²æÊ÷µÄ¶ş²æÁ´±í½á¹¹£¬Ò²¾ÍÊÇ¶ş²æÊ÷µÄ´æ´¢½á¹¹£¬1¸öÊı¾İÓò£¬2¸öÖ¸ÕëÓò£¨·Ö±ğÖ¸Ïò×óÓÒº¢×Ó£©
 typedef  struct BiTNode{
     ElemType data;
     struct BiTNode *lchild, *rchild;
 }BiTNode, *BiTree;
-
 typedef BiTree Elemtype;
-
 typedef struct SqStack{
   Elemtype data[datasize];
-  int top;/* æ ˆé¡¶æŒ‡é’ˆ */
+  int top;/* Õ»¶¥Ö¸Õë */
 }SqStack;
 
 void InitStack(SqStack *s){
   s->top = -1;
 }
-/* è¿›æ ˆ */
+/* ½øÕ» */
 bool Push(SqStack *s,Elemtype x){
   if(s->top == datasize-1){
     return false;
@@ -28,24 +26,15 @@ bool Push(SqStack *s,Elemtype x){
   }
   return true;
 }
-/* å‡ºæ ˆ */
+/* ³öÕ» */
 bool Pop(SqStack *s,Elemtype *x){
-  if(s->top == -1){/* ç©ºæ ˆ */
+  if(s->top == -1){/* ¿ÕÕ» */
     return false;
   }else{
     *x = s->data[s->top--];
   }
   return true;
 }
-/* åˆ¤æ–­æ ˆç©º */
-bool StackEmpty(SqStack *s){
-  if(s->top == -1){
-    return true;
-  }else{
-    return false;
-  }
-}
-/* å‰åºéå†ï¼šè¾“å‡ºè¯¥èŠ‚ç‚¹ï¼Œç„¶åå·¦å­©å­ï¼Œæœ€åå³å­©å­ */
 void PreOrder(BiTree t){
   if(t){
     printf("%c ",t->data);
@@ -53,7 +42,6 @@ void PreOrder(BiTree t){
     PreOrder(t->rchild);
   }
 }
-/* ä¸­åºéå† ï¼šå…ˆå·¦å­©å­ï¼Œç„¶åè¾“å‡ºè¯¥ç»“ç‚¹ï¼Œæœ€åå³å­©å­*/
 void InOrder(BiTree t){
   if(t){
     InOrder(t->lchild);
@@ -61,7 +49,13 @@ void InOrder(BiTree t){
     InOrder(t->rchild);
   }
 }
-/* ä¸­åºéå† éé€’å½’æ–¹æ³•ä¸ç†è§£å¯ä»¥ç”»å›¾çœ‹ä¸‹*/
+bool StackEmpty(SqStack *s){
+  if(s->top == -1){
+    return true;
+  }else{
+    return false;
+  }
+}
 void InOrder2(BiTree t){
   SqStack s;
   InitStack(&s);
@@ -77,20 +71,21 @@ void InOrder2(BiTree t){
     }
   }
 }
-/*äºŒå‰æ ‘çš„å»ºç«‹ï¼ŒæŒ‰å‰åºéå†çš„æ–¹å¼å»ºç«‹äºŒå‰æ ‘*/
-void CreateBiTree(BiTree *T){
+//¶ş²æÊ÷µÄ½¨Á¢£¬°´Ç°Ğò±éÀúµÄ·½Ê½½¨Á¢¶ş²æÊ÷£¬µ±È»Ò²¿ÉÒÔÒÔÖĞĞò»òºóĞòµÄ·½Ê½½¨Á¢¶ş²æÊ÷
+void CreateBiTree(BiTree *T)
+{
     ElemType ch;
     scanf("%c",&ch);
     if (ch == ' ')
-        *T = NULL;  //ä¿è¯æ˜¯å¶ç»“ç‚¹
+        *T = NULL;  //±£Ö¤ÊÇÒ¶½áµã
     else
     {
         *T = (BiTree)malloc(sizeof(BiTNode));
         //if (!*T)
-            //exit(OVERFLOW); //å†…å­˜åˆ†é…å¤±è´¥åˆ™é€€å‡ºã€‚
-        (*T)->data = ch;//ç”Ÿæˆç»“ç‚¹
-        CreateBiTree(&(*T)->lchild);//æ„é€ å·¦å­æ ‘
-        CreateBiTree(&(*T)->rchild);//æ„é€ å³å­æ ‘
+            //exit(OVERFLOW); //ÄÚ´æ·ÖÅäÊ§°ÜÔòÍË³ö¡£
+        (*T)->data = ch;//Éú³É½áµã
+        CreateBiTree(&(*T)->lchild);//¹¹Ôì×ó×ÓÊ÷
+        CreateBiTree(&(*T)->rchild);//¹¹ÔìÓÒ×ÓÊ÷
     }
 }
 

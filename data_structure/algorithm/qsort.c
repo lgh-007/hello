@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/*split算法解析*/
+/*split�㷨����*/
 void swap1(int *a,int *b){
   int tmp;
   tmp = *a;
@@ -9,27 +9,27 @@ void swap1(int *a,int *b){
   *b = tmp;
 }
 void swap2(int *a,int *b){
-  /*切记不能针对同一个地址进行操作。*/
-  printf("替换前%d %d\n", *a,*b);
+  /*�мǲ������ͬһ����ַ���в�����*/
+  printf("�滻ǰ%d %d\n", *a,*b);
   *a = *a + *b;
   *b = *a - *b;
   *a = *a - *b;
-  printf("替换后%d %d\n", *a , *b );
+  printf("�滻��%d %d\n", *a , *b );
 }
 void swap3(int *a,int *b){
-  /*切记不能针对同一个地址进行操作。*/
+  /*�мǲ������ͬһ����ַ���в�����*/
   *a^=*b;
   *b^=*a;
   *a^=*b;
 }
-/*快速排序的两种方法*/
+/*������������ַ���*/
 int split(int a[],int low,int high){
   int i , j , x;
-  i = low;      /*i指向比较元素的期望位置*/
-  x = a[i];     /*将该数组第一个元素设置为比较元素*/
-  /*从数组的第二个元素起开始遍历，若找到的元素大于比较元素，则跳过*/
+  i = low;      /*iָ��Ƚ�Ԫ�ص�����λ��*/
+  x = a[i];     /*���������һ��Ԫ������Ϊ�Ƚ�Ԫ��*/
+  /*������ĵڶ���Ԫ����ʼ���������ҵ���Ԫ�ش��ڱȽ�Ԫ�أ�������*/
   for(j = low+1;j<=high;j++){
-     /*若找到了小于比较元素的数，则将其与前面较大的数进行交换*/
+     /*���ҵ���С�ڱȽ�Ԫ�ص�����������ǰ��ϴ�������н���*/
     if(a[j]<=x){
       i++;
       if(i != j)
@@ -37,52 +37,52 @@ int split(int a[],int low,int high){
     }
   }
   if(i != j){
-    swap3(&a[low],&a[i]);   /*将比较元素交换到期望位置*/
+    swap3(&a[low],&a[i]);   /*���Ƚ�Ԫ�ؽ���������λ��*/
   }
   return i;
 }
 int partition(int a[],int low,int high){
-  int x = a[low];    //将该数组第一个元素设置为比较元素
-  int i = low;    //指向数组头的指针
-  int j = high;    //指向数组尾的指针
+  int x = a[low];    //���������һ��Ԫ������Ϊ�Ƚ�Ԫ��
+  int i = low;    //ָ������ͷ��ָ��
+  int j = high;    //ָ������β��ָ��
   while (i < j)
   {
     while (i < j && a[j] >= x)
-      j--;    //从右至左找到第一个小于比较元素的数
+      j--;    //���������ҵ���һ��С�ڱȽ�Ԫ�ص���
     while (i < j && a[i] <= x)
-      i++;    //从左至右找到第一个大于比较元素的数
-    /*需要注意的是，这里的j--与i++的顺序不可以调换！
-    如果调换了顺序，i会走过头，以至于将后面较大的元素交换到数组开头*/
+      i++;    //���������ҵ���һ�����ڱȽ�Ԫ�ص���
+    /*��Ҫע����ǣ������j--��i++��˳�򲻿��Ե�����
+    ���������˳��i���߹�ͷ�������ڽ�����ϴ��Ԫ�ؽ��������鿪ͷ*/
 
-    //将大数与小数交换
+    //��������С������
     if (i != j)
-      swap1(&a[i], &a[j]);
+        swap1(&a[i], &a[j]);
   }
-  swap1(&a[low], &a[i]);    //将比较元素交换到期望位置
-  return i;    //返回比较元素的位置
+  swap1(&a[low], &a[i]);    //���Ƚ�Ԫ�ؽ���������λ��
+  return i;    //���رȽ�Ԫ�ص�λ��
 }
 int quicksort(int a[],int low,int high){
   if (low < high){
-    // int i = split(a, low, high);  /*划分数组并获得比较元素位置*/
+    // int i = split(a, low, high);  /*�������鲢��ñȽ�Ԫ��λ��*/
     int i = partition(a, low, high);
-    quicksort(a, low, i - 1);     /*对比较元素左边进行排序*/
-    quicksort(a, i + 1, high);    /*对比较元素右边进行排序*/
+    quicksort(a, low, i - 1);     /*�ԱȽ�Ԫ����߽�������*/
+    quicksort(a, i + 1, high);    /*�ԱȽ�Ԫ���ұ߽�������*/
   }
 }
-/*插入排序*/
+/*��������*/
 void InsertionSort(int *num,int n){
   int i,j,tmp;
   for(i = 1;i<n;i++){
     tmp = num[i];
     j = i-1;
     while (j >= 0 && tmp < num[j]) {
-      num[j+1] = num[j];//往后移动一次
+      num[j+1] = num[j];//�����ƶ�һ��
       j--;
     }
-    num[j+1] = tmp;//将元素插入。
+    num[j+1] = tmp;//��Ԫ�ز��롣
   }
 }
-/*系统自带库函数的使用*/
+/*ϵͳ�Դ��⺯����ʹ��*/
 int inc (const void * a,const void *b){
   return *(int *)a - *(int *)b;
 }

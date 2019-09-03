@@ -1,6 +1,6 @@
 main.o:clean test.c
 		gcc test.c -o test.o
-		./test.0
+		./test.o
 .PHONY: clean
 
 clean:
