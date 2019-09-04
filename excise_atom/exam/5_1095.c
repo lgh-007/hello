@@ -13,13 +13,13 @@ char* test(char* m,char *n)
 	int mark = 0;
 	int i = 0;
 	char *p = arr;
-	
+
 
 	char *q = exits;
 	switch(n[0]){
 		case 'D':
 			while(*m!='\0'){
-				
+
 				if(*m == n[2]&&flag ==1){
 					m++;
 					real = 1;
@@ -31,14 +31,14 @@ char* test(char* m,char *n)
 
 			arr[i] = *m;
 			if(real){
-				return p;	
+				return p;
 			}else{
 				return q;
 			}
 			break;
 		case 'I':
 			while(*m!='\0'){
-				
+
 				if(*m == n[2]){
 					real = 1;
 					mark = cnt;
@@ -54,9 +54,9 @@ char* test(char* m,char *n)
 			while(*m!='.'){
 				arr[++i] = *m++;
 			}
-			arr[++i] = *m;	
+			arr[++i] = *m;
 			if(real){
-				return p;	
+				return p;
 			}else{
 				return q;
 			}
@@ -72,12 +72,12 @@ char* test(char* m,char *n)
 			}
 			arr[i] = *m;
 			if(real){
-				return p;	
+				return p;
 			}else{
 				return q;
 			}
 			break;
-		default: 
+		default:
 			break;
 	}
 }
@@ -88,10 +88,10 @@ int main(int argc, char *argv[]) {
 //	while(gets(s1)){
 	gets(s1);
 	gets(s2);
-	
+
 	char *vll;
 	vll = test(s1,s2);
-	
+
 	printf("%s\n",vll);
 	memset(arr,0,41);
 	real = 0;

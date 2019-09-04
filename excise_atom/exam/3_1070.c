@@ -2,30 +2,30 @@
 #include <stdlib.h>
 #include<string.h>
 typedef char ElemType;
-//äºŒå‰æ ‘çš„äºŒå‰é“¾è¡¨ç»“æž„ï¼Œä¹Ÿå°±æ˜¯äºŒå‰æ ‘çš„å­˜å‚¨ç»“æž„ï¼Œ1ä¸ªæ•°æ®åŸŸï¼Œ2ä¸ªæŒ‡é’ˆåŸŸï¼ˆåˆ†åˆ«æŒ‡å‘å·¦å³å­©å­ï¼‰
+//¶þ²æÊ÷µÄ¶þ²æÁ´±í½á¹¹£¬Ò²¾ÍÊÇ¶þ²æÊ÷µÄ´æ´¢½á¹¹£¬1¸öÊý¾ÝÓò£¬2¸öÖ¸ÕëÓò£¨·Ö±ðÖ¸Ïò×óÓÒº¢×Ó£©
 typedef  struct BiTNode{
     ElemType data;
     struct BiTNode *lchild, *rchild;
 }BiTNode, *BiTree;
 int pindex = 0;
 char buff[100];
-/*äºŒå‰æ ‘çš„å»ºç«‹ï¼ŒæŒ‰å‰åºéåŽ†çš„æ–¹å¼å»ºç«‹äºŒå‰æ ‘*/
+/*¶þ²æÊ÷µÄ½¨Á¢£¬°´Ç°Ðò±éÀúµÄ·½Ê½½¨Á¢¶þ²æÊ÷*/
 void CreateBiTree(BiTree *T){
   if (buff[pindex] == '#'){
     pindex++;
-    *T = NULL;  //ä¿è¯æ˜¯å¶ç»“ç‚¹
+    *T = NULL;  //±£Ö¤ÊÇÒ¶½áµã
   }else {
       *T = (BiTree)malloc(sizeof(BiTNode));
       //if (!*T)
-          //exit(OVERFLOW); //å†…å­˜åˆ†é…å¤±è´¥åˆ™é€€å‡ºã€‚
-      (*T)->data = buff[pindex++];//ç”Ÿæˆç»“ç‚¹
+          //exit(OVERFLOW); //ÄÚ´æ·ÖÅäÊ§°ÜÔòÍË³ö¡£
+      (*T)->data = buff[pindex++];//Éú³É½áµã
 
-      CreateBiTree(&(*T)->lchild);//æž„é€ å·¦å­æ ‘
-      CreateBiTree(&(*T)->rchild);//æž„é€ å³å­æ ‘
+      CreateBiTree(&(*T)->lchild);//¹¹Ôì×ó×ÓÊ÷
+      CreateBiTree(&(*T)->rchild);//¹¹ÔìÓÒ×ÓÊ÷
   }
 }
 
-/* ä¸­åºéåŽ† ï¼šå…ˆå·¦å­©å­ï¼Œç„¶åŽè¾“å‡ºè¯¥ç»“ç‚¹ï¼Œæœ€åŽå³å­©å­*/
+/* ÖÐÐò±éÀú £ºÏÈ×óº¢×Ó£¬È»ºóÊä³ö¸Ã½áµã£¬×îºóÓÒº¢×Ó*/
 void InOrder(BiTree t){
   if(t){
     InOrder(t->lchild);
@@ -33,7 +33,7 @@ void InOrder(BiTree t){
     InOrder(t->rchild);
   }
 }
-/*ä¸»å‡½æ•°*/
+/*Ö÷º¯Êý*/
 int main(int argc, char const *argv[]) {
   /* code */
   BiTree t;
