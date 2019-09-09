@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* åœ¨ä¸€ä¸ªN*Nçš„æ–¹é˜µä¸­ï¼Œå¡«å…¥1ï¼Œ2ï¼Œâ€¦â€¦N*Nä¸ªæ•°ï¼Œå¹¶è¦æ±‚æ„æˆå¦‚ä¸‹çš„æ ¼å¼ï¼š
-ä¾‹å¦‚ï¼š
+/* ÔÚÒ»¸öN*NµÄ·½ÕóÖĞ£¬ÌîÈë1£¬2£¬¡­¡­N*N¸öÊı£¬²¢ÒªÇó¹¹³ÉÈçÏÂµÄ¸ñÊ½£º
+ÀıÈç£º
 N=5
 13 14 15 16  1
 12 23 24 17  2
@@ -19,8 +19,8 @@ int main(int argc, char *argv[]) {
   int **arr = NULL;
 	while(scanf("%d",&n)!=EOF){
     cnt = 1;
-    arr = (int**)malloc(sizeof(int*)*n);//ä¸ºäºŒç»´æ•°ç»„åˆ†é…3è¡Œ
-    for (i = 0; i < n; i++){//ä¸ºæ¯åˆ—åˆ†é…4ä¸ªå¤§å°ç©ºé—´
+    arr = (int**)malloc(sizeof(int*)*n);//Îª¶şÎ¬Êı×é·ÖÅä3ĞĞ
+    for (i = 0; i < n; i++){//ÎªÃ¿ÁĞ·ÖÅä4¸ö´óĞ¡¿Õ¼ä
         arr[i] = (int*)malloc(sizeof(int)*n);
     }
 
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
       {
         arr[row][line] = cnt++;
       }
-    }/* forï¼ˆtimesï¼‰å¾ªç¯ç»“æŸ */
+    }/* for£¨times£©Ñ­»·½áÊø */
      if(n%2 == 1)
      {
         arr[n/2] [n/2] = cnt;
@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
         }
       printf("\n");
      }
-  }/* whileç»“æŸ */
+  }/* while½áÊø */
 
 	return 0;
 }

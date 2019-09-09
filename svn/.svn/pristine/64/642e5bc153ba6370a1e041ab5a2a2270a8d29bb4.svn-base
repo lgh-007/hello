@@ -13,7 +13,7 @@
 #include "include/mem_stat.h"
 #include "include/hello.h"
 
-/**主函数**/
+/* 主函数 */
 int main(int argc, char const *argv[])
 {
     int **test1, i;

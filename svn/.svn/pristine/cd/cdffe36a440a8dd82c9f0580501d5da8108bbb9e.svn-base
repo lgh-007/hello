@@ -5,11 +5,10 @@
  * mem_stat.c
  * Original Author:  linguohui@ruijie.com.cn, 2019-9-3
  * 实现如下功能:
- * 对内存申请进行统计
- * 最终释放部分内存地址
- * 用来测试  内存统计代码的功能
+ * 对内存申请、释放进行统计
  */
 
+#include <stdio.h>
 #include "include/mem_stat.h"
 
 /* 定义链表头 */
@@ -28,6 +27,8 @@ static inline void mem_stat_cache_obj_init(mem_stat_t *mem_stat)
 static inline void mem_stat_app_attr_copy(mem_stat_t *mem_stat_obj, mem_stat_t *mem_stat_in)
 {
     mem_stat_obj->times = mem_stat_in->times;
+    mem_stat_obj->mem_alloced = mem_stat_in->mem_alloced;
+    mem_stat_obj->type = mem_stat_in->type;
 }
 
 /* 初始化hash表 */
@@ -62,14 +63,15 @@ static int ut_dump_intf_op(void *item, void *para)
         node->next = g_mem_stat_head.next;
         g_mem_stat_head.next = node;
     }
+
     printf("%7s %7d %7d %7d %7d\n", obj->key.filep, obj->key.line,
-        obj->times,obj->mem_alloced,obj->type);
+        obj->times, obj->mem_alloced, obj->type);
 
     return 0;
 }
 
-/**打印输出**/
-static int intf_dump(int lmt)
+/* 打印输出 */
+void intf_dump(int lmt)
 {
     /* 打印哈希表 */
     printf("dump-ss-intf:\n");
@@ -79,15 +81,12 @@ static int intf_dump(int lmt)
     DL_CACHE_TRAVERSE(mem_stat, ut_dump_intf_op, &lmt);
     /* 打印链表 */
     printf("------- ------- ------- ------- -------    \n");
-    printf("------- ------- ------- ------- -------    \n");
-    printf(" filep   sum     type \n");
+    printf(" filep      sum      type \n");
     linklist_print(&g_mem_stat_head);
-
-    return 0;
 }
 
-/* 哈希表的增加和更新 */
-void intf_add(size_t size, char *filep, int line, int type)
+/* 哈希表更新(增改操作) */
+void hash_update(size_t size, char *filep, int line, enum types hash_tpye)
 {
     mem_stat_t *obj, tmp;
 
@@ -96,42 +95,42 @@ void intf_add(size_t size, char *filep, int line, int type)
     tmp.key.line = line;
     if (NULL == (obj = DL_CACHE_GET(mem_stat, &tmp))) {
         tmp.times++;
+        tmp.mem_alloced = size;
+        tmp.type = hash_tpye;
         if (NULL == DL_CACHE_CREATE(mem_stat, obj, &tmp)) {
             printf("create fail. \n");
+
+            return;
         }
-        obj->mem_alloced = size;
-        obj->type = type;
     } else {
         obj->times++;
-        if (type == 1) {
+        if (hash_tpye == MALLOC) {
             obj->mem_alloced += size;
         }
     }
 }
+
 /* malloc统计 */
 char* intf_mtrace_malloc(size_t size, char *filep, int line)
 {
     void *mp;
     mp = malloc(size);
     if (mp != NULL) {
-        /* 内存申请计数加1 */
-        intf_add(size,filep,line,1);
+        /* 内存申请计数更新 */
+        hash_update(size, filep, line, MALLOC);
     }
 
     return mp;
 }
+
 /* free统计 */
 void intf_mtrace_free(void *mp, char *filep, int line)
 {
-    mem_stat_t *obj, tmp;
-
     if (mp != NULL) {
         free(mp);
-        /* 内存释放计数加1 */
-        intf_add(0, filep, line, 0);
+        /* 内存释放计数更新 */
+        hash_update(0, filep, line, FREE);
     }
-
-    return;
 }
 
 /* 输出打印 */

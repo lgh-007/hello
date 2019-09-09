@@ -5,11 +5,11 @@
 
 int main(int argc, char *argv[]) {
 	int day[12] = {31,28,31,30, 31,30,31,31,30,31,30,31};
-	
+
 	char arr[12] ;
 	int array[3] = {0},sum = 0,i = 0,j;
 	char *p = arr;
-	
+
 	int a,b;
 	gets(arr);
 	a = '0' - '0';
@@ -25,11 +25,11 @@ int main(int argc, char *argv[]) {
 		array[i] = (array[i]*10 + (*p - '0'));
 		p++;
 	}
-	
+
 	for(j = 0;j<array[1]-1;j++)
 	{
 		sum += day[j];
-		
+
 	}
 	sum += array[2];
 	if(array[0]%4==0&&array[0]%100!=0||array[0]%400==0)

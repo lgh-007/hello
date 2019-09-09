@@ -12,6 +12,8 @@
 #include <stdlib.h>
 #include "include/mem_stat.h"
 #include "include/hello.h"
+//CPS:这个宏有什么意义，字面看不出来
+#define NUM 5
 
 /**主函数**/
 int main(int argc, char const *argv[])
@@ -21,17 +23,17 @@ int main(int argc, char const *argv[])
     mem_stat_init();
     hello();
 
-    test1 = (int **)m_malloc(sizeof(int*) * 5);
-    for (i = 0; i < 5; i++ ) {
+    test1 = (int **)m_malloc(sizeof(int*) * NUM);
+    for (i = 0; i < NUM; i++ ) {
         test1[i] = (int*)m_malloc(sizeof(int) * 10);
     }
 
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < NUM; i++) {
         m_free(test1[i]);
     }
     m_free(test1);
-
+    
     info_printf();
-
+    
     return 0;
 }

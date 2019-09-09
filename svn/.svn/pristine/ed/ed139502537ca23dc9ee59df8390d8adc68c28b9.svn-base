@@ -12,9 +12,9 @@
 
 #include "include/mem_stat.h"
 
-/* 定义链表头 */
-acc_info_t g_mem_stat_head = {.next = NULL};
-
+/**定义链表头**///CPS:全局变量以"g_模块名_"做前缀
+acc_info_t head = {.next = NULL};
+//CPS:空行
 /*
  * 1. 结构体各个属性初始化、各属性赋值函数，由业务自己定义；
  * 2. 约束：在 DL_HASH_OP之前需要声明这两个函数；
@@ -24,69 +24,68 @@ static inline void mem_stat_cache_obj_init(mem_stat_t *mem_stat)
 {
     memset(mem_stat, 0, sizeof(mem_stat[0]));
 }
-
+//CPS:空行
 static inline void mem_stat_app_attr_copy(mem_stat_t *mem_stat_obj, mem_stat_t *mem_stat_in)
 {
-    mem_stat_obj->times = mem_stat_in->times;
+    mem_stat_obj->alloc_times = mem_stat_in->alloc_times;
 }
-
-/* 初始化hash表 */
+//CPS:空行
+/** 初始化hash表  **/
 DL_KHASH_DEF(mem_stat);
-/* hash操作接口 */
+/** hash操作接口 **/
 DL_HASH_OP(mem_stat);
-
-/* 哈希表初始化 */
+//CPS
+/**哈希表初始化**/
 void mem_stat_init(void)
 {
-    mem_stat_hash_init();
+  mem_stat_hash_init();
 }
-
-/* 打印接口 */
+//CPS:空行
+/**打印接口**/
 static int ut_dump_intf_op(void *item, void *para)
 {
-    int *lmt;
     mem_stat_t *obj;
-    acc_info_t* node;
+    int *lmt;
 
     lmt = (int *)para;
     if ((*lmt)-- == 0) {
         return -1;
     }
     obj = (mem_stat_t *)item;
-
-    if (!is_find(&g_mem_stat_head, obj)) {
-        node = (acc_info_t*)malloc(sizeof(acc_info_t));
-        node->sum = obj->times;
-        node->type = obj->type;
-        node->filep = obj->key.filep;
-        node->next = g_mem_stat_head.next;
-        g_mem_stat_head.next = node;
+    if (!is_find(&head, obj)) {
+        //CPS:缩进不符标准
+      acc_info_t* node;//CPS:在函数最前面定义变量
+      node = (acc_info_t*)malloc(sizeof(acc_info_t));
+      node->sum = obj->alloc_times;
+      node->type = obj->type;
+      node->filep = obj->key.filep;
+      node->next = head.next;
+      head.next = node;
     }
     printf("%7s %7d %7d %7d %7d\n", obj->key.filep, obj->key.line,
-        obj->times,obj->mem_alloced,obj->type);
+        obj->alloc_times,obj->mem_alloced,obj->type);
 
     return 0;
 }
-
+//CPS:空行
 /**打印输出**/
 static int intf_dump(int lmt)
 {
-    /* 打印哈希表 */
     printf("dump-ss-intf:\n");
     printf("count:%d \n", mem_stat_hash_size());
     printf(" filep    line    times   size   type \n");
     printf("------- ------- ------- ------- -------    \n");
     DL_CACHE_TRAVERSE(mem_stat, ut_dump_intf_op, &lmt);
-    /* 打印链表 */
     printf("------- ------- ------- ------- -------    \n");
     printf("------- ------- ------- ------- -------    \n");
     printf(" filep   sum     type \n");
-    linklist_print(&g_mem_stat_head);
+    linklist_print(&head);
 
     return 0;
 }
-
-/* 哈希表的增加和更新 */
+//CPS:空行
+/**哈希表的增加和更新**///CPS:内存释放的处理是怎样的
+//CPS:命名跟金池交流，后面要上项目
 void intf_add(size_t size, char *filep, int line, int type)
 {
     mem_stat_t *obj, tmp;
@@ -95,20 +94,21 @@ void intf_add(size_t size, char *filep, int line, int type)
     tmp.key.filep = filep;
     tmp.key.line = line;
     if (NULL == (obj = DL_CACHE_GET(mem_stat, &tmp))) {
-        tmp.times++;
+        tmp.alloc_times++;//CPS:后面obj处理
         if (NULL == DL_CACHE_CREATE(mem_stat, obj, &tmp)) {
             printf("create fail. \n");
+            //CPS:返回
         }
         obj->mem_alloced = size;
         obj->type = type;
     } else {
-        obj->times++;
-        if (type == 1) {
+        obj->alloc_times++;
+        if (type == 1) {//CPS:用枚举或宏
             obj->mem_alloced += size;
         }
     }
 }
-/* malloc统计 */
+/**malloc统计**/
 char* intf_mtrace_malloc(size_t size, char *filep, int line)
 {
     void *mp;
@@ -120,45 +120,45 @@ char* intf_mtrace_malloc(size_t size, char *filep, int line)
 
     return mp;
 }
-/* free统计 */
+/**free统计**/
 void intf_mtrace_free(void *mp, char *filep, int line)
 {
     mem_stat_t *obj, tmp;
-
+//CPS:空行
     if (mp != NULL) {
         free(mp);
-        /* 内存释放计数加1 */
-        intf_add(0, filep, line, 0);
+        /* 内存申请计数减1 */
+        intf_add(0, filep, line, 0);//CPS:空格
     }
 
     return;
 }
-
-/* 输出打印 */
+//CPS:空行
+/**输出打印**/
 void info_printf(void)
 {
     int dump_cnt;
-
+//CPS:空行
     dump_cnt = -1;       /* -1表示全部打印 */
     intf_dump(dump_cnt);
 }
-
-/* 在链表中是否找到匹配 */
-bool is_find(acc_info_t* node, mem_stat_t *obj)
+//CPS:空行
+/**在链表中是否找到匹配**///CPS:为什么不是返回bool
+int is_find(acc_info_t* node, mem_stat_t *obj)
 {
     while (node->next != NULL) {
         node = node->next;
         if (node->filep == obj->key.filep && node->type == obj->type) {
-            node->sum += obj->times;
+        node->sum += obj->alloc_times;//CPS:缩进错误
 
-            return true;
-        }
-    }
-
-    return false;
+        return 1;//CPS:缩进错误
+    }//CPS:缩进错误
+  }//CPS:缩进错误
+  
+  return 0;//CPS:缩进错误
 }
-
-/* 打印链表 */
+//CPS:空行
+/**打印链表**/
 void linklist_print(acc_info_t* node)
 {
     while (node->next != NULL) {

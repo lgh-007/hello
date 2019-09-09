@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-/*队列的基础操作用法，循环队列*/
 
 #define datasize 50
 #define true     1
@@ -12,7 +11,7 @@ typedef struct{
   Elemtype data[datasize];
   int front,rear;
 }Queue;
-/* 初始化队列 */
+
 void InitQueue(Queue *q){
   q->front = q->rear = 0;
 }
@@ -22,19 +21,19 @@ bool isEmpty(Queue q){
   else
     return false;
 }
-/* 入队 */
+
 bool EnQueue(Queue *q,Elemtype val){
   if((q->rear+1)%datasize == q->front){
-    return false;/* 队列满 */
+    return false;
   }
   q->data[q->rear] = val;
   q->rear = (q->rear+1)%datasize;
   return true;
 }
-/* 出队 */
+
 bool DeQueue(Queue *q,Elemtype *val){
   if(q->rear == q->front){
-    return false;/* 队空 */
+    return false;
   }
   *val = q->data[q->front];
   q->front = (q->front+1)%datasize;
